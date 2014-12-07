@@ -1,7 +1,7 @@
 <?php
 	// Main Plugin file for the plugin Extended Useradmininfos
 	// © 2013-2014 Flobo x3
-	// Last change: 2014-11-22
+	// Last change: 2014-12-07
 	
 if(!defined('IN_MYBB')) {
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
@@ -11,10 +11,10 @@ $plugins->add_hook('global_end', 'extendeduseradmininfos_set_info');
 $plugins->add_hook('member_profile_start', 'extendeduseradmininfos_get_info');
 
 function extendeduseradmininfos_info() {
-	global $lang;
+	global $lang, $db;
 	$lang->load('extendeduseradmininfo');
 	
-	return array(
+	$info = array(
 		"name" 			=> $lang->extendeduseradmininfo_name,
 		"description"	=> $lang->extendeduseradmininfo_desc,
 		"website"		=> 'http://forum.mybboard.de/user-9022.html',
@@ -25,6 +25,13 @@ function extendeduseradmininfos_info() {
 		"guid" 			=> '138867d0b45740bce59f3e48dc72c893',
 		"codename"		=> 'berger_florian_useradmininfo'
 	);
+	
+	// show hint if last_ip field still exists
+	$result = $db->query("SHOW COLUMNS FROM `" . TABLE_PREFIX . "users` LIKE 'last_ip'");
+	if ($result->num_rows > 0)
+		$info["description"] .= "<br /><br />" . $lang->extendeduseradmininfo_dbchanged;
+	
+	return $info;
 }
 
 function extendeduseradmininfos_activate() {
@@ -32,14 +39,16 @@ function extendeduseradmininfos_activate() {
 }
 
 function extendeduseradmininfos_deactivate() {
+	global $db;
 	
+	// refresh database structure -> remove plugin added field for last ip and use mybb own field
+	$result = $db->query("SHOW COLUMNS FROM `" . TABLE_PREFIX . "users` LIKE 'last_ip'");
+	if ($result->num_rows > 0)
+		$db->query("ALTER TABLE `" . TABLE_PREFIX . "users` DROP COLUMN last_ip");
 }
 
 function extendeduseradmininfos_install() {
 	global $db;
-	
-	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users` ADD last_ip VARCHAR(15)";
-	$db->query($sQry);
 	
 	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users` ADD last_useragent VARCHAR(255)";
 	$db->query($sQry);
@@ -120,10 +129,6 @@ function extendeduseradmininfos_uninstall() {
 	global $db;
 	
 	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users`
-			 DROP COLUMN last_ip";
-	$db->write_query($sQry);
-	
-	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users`
 			 DROP COLUMN last_useragent";
 	$db->write_query($sQry);
 	
@@ -147,7 +152,7 @@ function extendeduseradmininfos_set_info() {
 		$useragent =  $db->escape_string($_SERVER['HTTP_USER_AGENT']);
 		$ip = $db->escape_string($_SERVER['REMOTE_ADDR']);
 		
-		$sQry = "UPDATE " . TABLE_PREFIX . "users SET last_ip='$ip', last_useragent='$useragent' WHERE uid=" . $uid;
+		$sQry = "UPDATE " . TABLE_PREFIX . "users SET last_useragent='$useragent' WHERE uid=" . $uid;
 		$db->write_query($sQry);
 	}
 }
@@ -262,7 +267,7 @@ function extendeduseradmininfos_get_info() {
 	$query = $db->simple_select("users", "*", "uid='{$userid}'");
 	$infomember = $db->fetch_array($query);
 	
-    $lastip = $infomember['last_ip'];
+    $lastip = my_inet_ntop($db->unescape_binary($infomember['lastip']));
     $lastagent = $infomember['last_useragent'];
     if ($lastagent != "") {
         $browser = getBrowser($lastagent);
@@ -294,7 +299,7 @@ function extendeduseradmininfos_get_info() {
         } else {
             $operatingsys = $lang->extendeduseradmininfo_unknown;
         }
-    
+		
         $temp = str_replace(array('___LASTIP___', '___AGENT___', '___BROWSER___', '___OS___'), array($ipadress, $useragent, $browsername, $operatingsys), $infoTable);
     } else {
 		if ($infoTable == '') {
@@ -305,6 +310,5 @@ function extendeduseradmininfos_get_info() {
 	}
     $advInfo = $temp;
 }
-
 
 ?>

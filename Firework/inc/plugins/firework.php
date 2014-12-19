@@ -25,7 +25,7 @@ function firework_info()
 		'website'		=> 'http://community.mybb.com/user-75209.html',
 		'author'		=> 'Flobo x3',
 		'authorsite'	=> 'http://forum.mybboard.de/user-9022.html',
-		'version'		=> '1.2.0',
+		'version'		=> '1.2.1',
 		'compatibility' => '14*,16*,18*',
 		'guid'			=> '123fab94fb6b3d7a6ebaf589f1c8291f',
 		'codename' 		=> 'berger_florian_firework'
@@ -84,8 +84,8 @@ function firework_usercp() {
 
 function firework($site)
 {
-	global $mybb, $user;
-	if ($user['showFirework'])
+	global $mybb;
+	if ($mybb->user['showFirework'])
 		$site = str_replace('</head>','<script type="text/javascript" src="'.$mybb->settings['bburl'].'/jscripts/firework.js"></script></head>',$site);
 	return $site;
 }

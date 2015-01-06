@@ -43,9 +43,11 @@ while ($refitem = $db->fetch_array($query)) {
 		$userlink = $lang->table_guest;
 	}
 	
+	$userIp = my_inet_ntop($db->unescape_binary($refitem['BinaryUserIP']));
+	
 	// create new line for the referer to show
 	$table->construct_cell($refitem['URL']);
-	$table->construct_cell('<hover title="IP: ' . $refitem['UserIP'] . '">' . $userlink . '</hover>');
+	$table->construct_cell('<hover title="IP: ' . $userIp . '">' . $userlink . '</hover>');
 	$table->construct_cell($refitem['TS']);
 	$table->construct_row();
 }

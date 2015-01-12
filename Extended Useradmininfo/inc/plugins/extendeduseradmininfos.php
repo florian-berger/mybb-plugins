@@ -116,13 +116,11 @@ function extendeduseradmininfos_install() {
 
 function extendeduseradmininfos_is_installed() {
 	global $db;
-	
-	$result = $db->query("SHOW COLUMNS FROM `" . TABLE_PREFIX . "users` LIKE 'last_useragent'");
-	
-	if ($result->num_rows > 0)
+        
+	if($db->field_exists("last_useragent", "users"))
 		return true;
-	
-	return false;
+			
+	return false; 
 }
 
 function extendeduseradmininfos_uninstall() {

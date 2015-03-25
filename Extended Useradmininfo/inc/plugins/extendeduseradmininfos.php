@@ -20,7 +20,7 @@ function extendeduseradmininfos_info() {
 		"website"		=> 'http://forum.mybboard.de/user-9022.html',
 		"author"		=> 'Florian Berger',
 		"authorsite"	=> 'http://florian-berger.info',
-		"version"		=> '1.6.0',
+		"version"		=> '2.0.0',
 		"compatibility" => '16*,18*',
 		"guid" 			=> '138867d0b45740bce59f3e48dc72c893',
 		"codename"		=> 'berger_florian_useradmininfo'

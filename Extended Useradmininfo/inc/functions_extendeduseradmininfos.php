@@ -1,6 +1,6 @@
 <?php
 	// Functions file for the plugin Extended Useradmininfos
-	// © 2013-2015 Flobo x3
+	// Â© 2013-2015 Flobo x3
 	// Last change: 2015-03-25
 
 function getBrowser($u_agent)

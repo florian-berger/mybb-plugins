@@ -1,6 +1,6 @@
 <?php
 	// Main Plugin file for the plugin Extended Useradmininfos
-	// © 2013-2014 Flobo x3
+	// Â© 2013-2014 Flobo x3
 	// Last change: 2014-12-07
 	
 if(!defined('IN_MYBB')) {
@@ -20,7 +20,7 @@ function extendeduseradmininfos_info() {
 		"website"		=> 'http://forum.mybboard.de/user-9022.html',
 		"author"		=> 'Florian Berger',
 		"authorsite"	=> 'http://florian-berger.info',
-		"version"		=> '1.5.0',
+		"version"		=> '1.6.0',
 		"compatibility" => '16*,18*',
 		"guid" 			=> '138867d0b45740bce59f3e48dc72c893',
 		"codename"		=> 'berger_florian_useradmininfo'
@@ -35,23 +35,7 @@ function extendeduseradmininfos_info() {
 }
 
 function extendeduseradmininfos_activate() {
-	
-}
-
-function extendeduseradmininfos_deactivate() {
 	global $db;
-	
-	// refresh database structure -> remove plugin added field for last ip and use mybb own field
-	$result = $db->query("SHOW COLUMNS FROM `" . TABLE_PREFIX . "users` LIKE 'last_ip'");
-	if ($result->num_rows > 0)
-		$db->query("ALTER TABLE `" . TABLE_PREFIX . "users` DROP COLUMN last_ip");
-}
-
-function extendeduseradmininfos_install() {
-	global $db;
-	
-	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users` ADD last_useragent VARCHAR(255)";
-	$db->query($sQry);
 	
 	$templateset = array(
 	    "prefix" => "extendeduseradmininfo",
@@ -87,7 +71,45 @@ function extendeduseradmininfos_install() {
         </tr>
         </table>
 		",
-				"sid" => -2
+		"sid" => -2
+	);
+	$db->insert_query("templates", $templatearray);
+	
+	$templatearray = array(
+        "title" => "extendeduseradmininfo_geo_info",
+        "template" => "
+		<br />
+        <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
+        <tr>
+        <td colspan=\"2\" class=\"thead\"><strong>{\$lang->extendeduseradmininfo_geo_header}</strong></td>
+        </tr>
+        <tr>
+        <td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_country}</strong></td>
+        <td class=\"trow1\">___COUNTRY______COUNTRYCODE___</td>
+        </tr>
+        <tr>
+        <td class=\"trow2\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_city}</strong></td>
+        <td class=\"trow2\">___POSTALCODE______CITY___</td>
+        </tr>
+        <tr>
+        <td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_region}</strong></td>
+        <td class=\"trow1\">___REGION___</td>
+        </tr>
+        <tr>
+        <td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_continentcode}</strong></td>
+        <td class=\"trow1\">___CONTINENTCODE___</td>
+        </tr>
+        <tr>
+        <td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_latitude}</strong></td>
+        <td class=\"trow1\">___LATITUDE___</td>
+        </tr>
+        <tr>
+        <td class=\"trow2\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_longitude}</strong></td>
+        <td class=\"trow2\">___LONGITUDE___</td>
+        </tr>
+        </table>
+		",
+		"sid" => -2
 	);
 	$db->insert_query("templates", $templatearray);
 	
@@ -108,10 +130,59 @@ function extendeduseradmininfos_install() {
 	);
 	$db->insert_query("templates",$templatearray);
 	
+	$templatearray = array(
+		"title" => 'extendeduseradmininfo_view_nogeoinfos',
+		"template" => "
+		<br />
+        <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
+        <tr>
+        <td colspan=\"2\" class=\"thead\"><strong>{\$lang->extendeduseradmininfo_geo_header}</strong></td>
+        </tr>
+        <tr>
+        <td class=\"trow1\" >{\$lang->extendeduseradmininfo_no_geo_ipv6}</td>
+        </tr>
+        </table>
+		",
+		"sid" => -2
+	);
+	$db->insert_query("templates",$templatearray);
+	
 	
 	// Edit AdministratorOptions Template
 	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
-	find_replace_templatesets('member_profile_adminoptions', '#</table>#', '</table>{$advInfo}');
+	find_replace_templatesets('member_profile_adminoptions', '#</table>#', '</table>{$advInfo}{$geoInfo}');
+}
+
+function extendeduseradmininfos_deactivate() {
+	global $db;
+	
+	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
+	find_replace_templatesets('member_profile_adminoptions', '#\{\$advInfo\}#', '', 0);
+	find_replace_templatesets('member_profile_adminoptions', '#\{\$geoInfo\}#', '', 0);
+	
+	// refresh database structure -> remove plugin added field for last ip and use mybb own field
+	$result = $db->query("SHOW COLUMNS FROM `" . TABLE_PREFIX . "users` LIKE 'last_ip'");
+	if ($result->num_rows > 0)
+		$db->query("ALTER TABLE `" . TABLE_PREFIX . "users` DROP COLUMN last_ip");
+	
+	// Delete the template
+	$templatearray = array(
+        "extendeduseradmininfo_view",
+		"extendeduseradmininfo_view_noinfos",
+		"extendeduseradmininfo_geo_info",
+		"extendeduseradmininfo_view_nogeoinfos"
+    );
+	$deltemplates = implode("','", $templatearray);
+	
+	$db->delete_query("templates", "title in ('{$deltemplates}')");
+	$db->delete_query("templategroups", "prefix IN('extendeduseradmininfo')");
+}
+
+function extendeduseradmininfos_install() {
+	global $db;
+	
+	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users` ADD last_useragent VARCHAR(255)";
+	$db->query($sQry);
 }
 
 function extendeduseradmininfos_is_installed() {
@@ -129,17 +200,6 @@ function extendeduseradmininfos_uninstall() {
 	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users`
 			 DROP COLUMN last_useragent";
 	$db->write_query($sQry);
-	
-	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
-	find_replace_templatesets('member_profile_adminoptions', '#\{\$advInfo\}#', '', 0);
-	
-	// Delete the template
-	$templatearray = array(
-        "extendeduseradmininfo_view",
-		"extendeduseradmininfo_view_noinfos"
-    );
-	$deltemplates = implode("','", $templatearray);
-	$db->delete_query("templates", "title in ('{$deltemplates}')");
 }
 
 function extendeduseradmininfos_set_info() {
@@ -155,109 +215,8 @@ function extendeduseradmininfos_set_info() {
 	}
 }
 
-function getBrowser($u_agent)
-{
-    $bname = '';
-    $platform = '';
-    $version= "";
-
-    //First get the platform?
-    if (preg_match('/linux/i', $u_agent)) {
-        $platform = 'Linux';
-    }
-    elseif (preg_match('/macintosh|mac os x/i', $u_agent)) {
-        $platform = 'Mac';
-    }
-    elseif (preg_match('/windows|win32/i', $u_agent)) {
-        if (preg_match('/NT 5.0/i', $u_agent)) {
-			$platform = 'Windows 2000';
-		} elseif (preg_match('/NT 5.1/i', $u_agent)) {
-			$platform = 'Windows XP';
-		} elseif (preg_match('/NT 6.0/i', $u_agent)) {
-			$platform = 'Windows Vista';
-		} elseif (preg_match('/NT 6.1/i', $u_agent)) {
-			$platform = 'Windows 7';
-		} elseif (preg_match('/NT 6.2/i', $u_agent)) {
-			$platform = 'Windows 8';
-		} elseif (preg_match('/NT 6.3/i', $u_agent)) {
-			$platform = 'Windows 8.1';
-		} elseif (preg_match('/NT 6.4/i', $u_agent)) {
-			$platform = 'Windows 10';
-		} else {
-			$platform = 'Windows';
-		}
-    }
-   
-    // Next get the name of the useragent yes seperately and for good reason
-    if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent))
-    {
-        $bname = 'Internet Explorer';
-        $ub = "MSIE";
-    }
-    elseif(preg_match('/Firefox/i',$u_agent))
-    {
-        $bname = 'Mozilla Firefox';
-        $ub = "Firefox";
-    }
-    elseif(preg_match('/Chrome/i',$u_agent))
-    {
-        $bname = 'Google Chrome';
-        $ub = "Chrome";
-    }
-    elseif(preg_match('/Safari/i',$u_agent))
-    {
-        $bname = 'Apple Safari';
-        $ub = "Safari";
-    }
-    elseif(preg_match('/Opera/i',$u_agent))
-    {
-        $bname = 'Opera';
-        $ub = "Opera";
-    }
-    elseif(preg_match('/Netscape/i',$u_agent))
-    {
-        $bname = 'Netscape';
-        $ub = "Netscape";
-    }
-   
-    // finally get the correct version number
-    $known = array('Version', $ub, 'other');
-    $pattern = '#(?<browser>' . join('|', $known) .
-    ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
-    if(!preg_match_all($pattern, $u_agent, $matches)) {
-        // we have no matching number just continue
-    }
-   
-    // see how many we have
-    $i = count($matches['browser']);
-    if ($i != 1) {
-        //we will have two since we are not using 'other' argument yet
-        //see if version is before or after the name
-        if (strripos($u_agent, "Version") < strripos($u_agent, $ub)){
-            $version = $matches['version'][0];
-        }
-        else {
-            $version = $matches['version'][1];
-        }
-    }
-    else {
-        $version = $matches['version'][0];
-    }
-   
-    // check if we have a number
-    if ($version == null || $version == "") {$version = "?";}
-   
-    return array(
-        'userAgent' => $u_agent,
-        'browser'   => $bname,
-        'version'   => $version,
-        'platform'  => $platform,
-        'pattern'    => $pattern
-    );
-} 
-
 function extendeduseradmininfos_get_info() {
-    global $lang, $db, $mybb, $templates, $theme, $infoTable, $advInfo;
+    global $lang, $db, $mybb, $templates, $theme, $infoTable, $advInfo, $geoTable, $geoInfo;
     $lang->load('extendeduseradmininfo');
 	
 	$userid = intval($mybb->input['uid']);
@@ -268,6 +227,7 @@ function extendeduseradmininfos_get_info() {
     $lastip = my_inet_ntop($db->unescape_binary($infomember['lastip']));
     $lastagent = $infomember['last_useragent'];
     if ($lastagent != "") {
+		require_once("inc/functions_extendeduseradmininfos.php");
         $browser = getBrowser($lastagent);
         
 		if ($infoTable == '') {
@@ -307,6 +267,53 @@ function extendeduseradmininfos_get_info() {
 		$temp = $infoTable;
 	}
     $advInfo = $temp;
+	
+	$geoTemp = "";
+	if (filter_var($lastip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+		// Wenn IPv4, dann Standort bestimmen
+		require_once("inc/functions_extendeduseradmininfos.php");
+		$geo = getGeoInformations($lastip);
+		
+		if ($geoTable == '') {
+			eval("\$geoTable = \"".$templates->get("extendeduseradmininfo_geo_info")."\";");
+		}
+		
+		if ($geo['Country'] == "")
+            $geo['Country'] = $lang->extendeduseradmininfo_unknown;
+		
+		if ($geo['CountryCode'] != "")
+            $geo['CountryCode'] = " (" . $geo['CountryCode'] . ")";
+		
+		if ($geo['City'] == "")
+            $geo['City'] = $lang->extendeduseradmininfo_unknown;
+		
+		if ($geo['Latitude'] == "")
+            $geo['Latitude'] = $lang->extendeduseradmininfo_unknown;
+		
+		if ($geo['Longitude'] == "")
+            $geo['Longitude'] = $lang->extendeduseradmininfo_unknown;
+		
+		if ($geo['Region'] == "")
+            $geo['Region'] = $lang->extendeduseradmininfo_unknown;
+		
+		if ($geo['ContinentCode'] == "")
+            $geo['ContinentCode'] = $lang->extendeduseradmininfo_unknown;
+		
+		if ($geo['PostalCode'] != "")
+			$geo['PostalCode'] .= " ";
+		
+		$geoTemp = str_replace(
+								array('___COUNTRY___', '___COUNTRYCODE___', '___CITY___', '___LATITUDE___', '___LONGITUDE___', '___POSTALCODE___', '___REGION___', '___CONTINENTCODE___'), 
+								array($geo['Country'], $geo['CountryCode'], $geo['City'], $geo['Latitude'], $geo['Longitude'], $geo['PostalCode'], $geo['Region'], $geo['ContinentCode']),
+				   $geoTable);
+	} else {
+		if ($geoTable == '') {
+			eval("\$geoTable = \"".$templates->get("extendeduseradmininfo_view_nogeoinfos")."\";");
+		}
+		
+		$geoTemp = $geoTable;
+	}
+	$geoInfo = $geoTemp;
 }
 
 ?>

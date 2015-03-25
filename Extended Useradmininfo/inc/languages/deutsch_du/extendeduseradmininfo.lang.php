@@ -6,4 +6,14 @@
 	$l['extendeduseradmininfo_useragent'] = 'Useragent:';
 	$l['extendeduseradmininfo_no_informations_saved'] = '&Uuml;ber den Benutzer sind keine erweiterten Informationen gespeichert.';
 	$l['extendeduseradmininfo_unknown'] = 'Unbekannt';
+	
+	$l['extendeduseradmininfo_geo_header'] = 'Geo-Informationen';
+	$l['extendeduseradmininfo_geo_country'] = 'Land';
+	$l['extendeduseradmininfo_geo_postalcode'] = 'Stadt';
+	$l['extendeduseradmininfo_geo_city'] = 'Stadt';
+	$l['extendeduseradmininfo_geo_region'] = 'Region';
+	$l['extendeduseradmininfo_geo_latitude'] = 'Latitude';
+	$l['extendeduseradmininfo_geo_longitude'] = 'Longitude';
+	$l['extendeduseradmininfo_geo_continentcode'] = 'Kontinent (Code)';
+	$l['extendeduseradmininfo_no_geo_ipv6'] = '&Uuml;ber IPv6-Adressen k&ouml;nnen aktuell keine Geo-Informationen abgerufen werden.';
 ?>

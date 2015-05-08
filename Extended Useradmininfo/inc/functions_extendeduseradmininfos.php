@@ -29,10 +29,8 @@ function getBrowser($u_agent)
 			$platform = 'Windows 8';
 		} elseif (preg_match('/NT 6.3/i', $u_agent)) {
 			$platform = 'Windows 8.1';
-		} elseif (preg_match('/NT 6.4/i', $u_agent)) {
-			$platform = 'Windows 10 Developer Preview';
 		} elseif (preg_match('/NT 10.0/i', $u_agent)) {
-			$platform = 'Windows 10';
+			$platform = 'Windows 10 Technical Preview';
 		} else {
 			$platform = 'Windows';
 		}

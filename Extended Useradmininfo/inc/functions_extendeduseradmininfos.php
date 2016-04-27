@@ -1,7 +1,7 @@
 <?php
 	// Functions file for the plugin Extended Useradmininfos
-	// © 2013-2015 Flobo x3
-	// Last change: 2015-03-25
+	// © 2013-2016 Flobo x3
+	// Last change: 2016-04-27
 
 function getBrowser($u_agent)
 {
@@ -107,7 +107,7 @@ function getBrowser($u_agent)
 function getGeoInformations($ip)
 {
     // Read data from API
-	$file="http://geoip.florian-berger.info/api.php?ip=" . $ip;
+	$file="https://geoip.florian-berger.info/api.php?ip=" . $ip;
 	$json = file_get_contents($file);
 	
 	$geo_data = json_decode($json, true);

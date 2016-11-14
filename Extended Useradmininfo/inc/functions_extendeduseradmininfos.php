@@ -36,7 +36,11 @@ function getBrowser($u_agent)
     }
    
     // Next get the name of the useragent yes seperately and for good reason
-    if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent))
+    if(preg_match('/Edge/i', $u_agent)) {
+        $bname = 'Microsoft Edge';
+        $ub = "Edge";
+    }
+    elseif(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent))
     {
         $bname = 'Internet Explorer';
         $ub = "MSIE";

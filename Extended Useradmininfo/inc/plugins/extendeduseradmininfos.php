@@ -1,7 +1,7 @@
 <?php
 	// Main Plugin file for the plugin Extended Useradmininfos
-	// © 2013-2015 Flobo x3
-	// Last change: 2015-03-25
+	// © 2013-2016 Florian Berger
+	// Last change: 2016-11-14
 	
 if(!defined('IN_MYBB')) {
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");

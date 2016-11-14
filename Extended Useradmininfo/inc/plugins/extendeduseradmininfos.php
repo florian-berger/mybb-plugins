@@ -17,10 +17,10 @@ function extendeduseradmininfos_info() {
 	$info = array(
 		"name" 			=> $lang->extendeduseradmininfo_name,
 		"description"	=> $lang->extendeduseradmininfo_desc,
-		"website"		=> 'http://forum.mybboard.de/user-9022.html',
-		"author"		=> 'Florian Berger',
-		"authorsite"	=> 'http://florian-berger.info',
-		"version"		=> '2.0.2',
+		'website'		=> 'http://community.mybb.com/user-75209.html',
+		'author'		=> 'Florian Berger',
+		"authorsite"	=> 'https://florian-berger.info',
+		"version"		=> '2.1.0',
 		"compatibility" => '16*,18*',
 		"guid" 			=> '138867d0b45740bce59f3e48dc72c893',
 		"codename"		=> 'berger_florian_useradmininfo'

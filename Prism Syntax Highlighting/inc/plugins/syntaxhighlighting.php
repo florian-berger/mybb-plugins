@@ -26,7 +26,7 @@ function syntaxhighlighting_info()
         "authorsite"	=> 'https://florian-berger.info',
         'version'		=> '1.0.0',
         'compatibility' => '18*',
-        'guid'			=> '123fab94fb6b3d7a6ebaf589f1c8291f',
+        'guid'			=> '707b121d48b949d99aa20714eb41c713',
         'codename' 		=> 'berger_florian_prism_sh'
     );
 }

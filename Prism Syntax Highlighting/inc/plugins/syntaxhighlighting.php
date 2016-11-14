@@ -27,7 +27,7 @@ function syntaxhighlighting_info()
         'version'		=> '1.0.0',
         'compatibility' => '18*',
         'guid'			=> '123fab94fb6b3d7a6ebaf589f1c8291f',
-        'codename' 		=> 'berger_florian_syntaxhighlighting'
+        'codename' 		=> 'berger_florian_prism_sh'
     );
 }
 

@@ -1,13 +1,12 @@
 <?php
 	// Functions file for the plugin Extended Useradmininfos
-	// © 2013-2016 Flobo x3
-	// Last change: 2016-04-27
+	// © 2013-2016 Florian Berger
+	// Last change: 2016-11-14
 
 function getBrowser($u_agent)
 {
     $bname = '';
     $platform = '';
-    $version= "";
 
     //First get the platform?
     if (preg_match('/linux/i', $u_agent)) {
@@ -30,7 +29,7 @@ function getBrowser($u_agent)
 		} elseif (preg_match('/NT 6.3/i', $u_agent)) {
 			$platform = 'Windows 8.1';
 		} elseif (preg_match('/NT 10.0/i', $u_agent)) {
-			$platform = 'Windows 10 Technical Preview';
+			$platform = 'Windows 10';
 		} else {
 			$platform = 'Windows';
 		}
@@ -107,7 +106,7 @@ function getBrowser($u_agent)
 function getGeoInformations($ip)
 {
     // Read data from API
-	$file="https://geoip.florian-berger.info/api.php?ip=" . $ip;
+	$file="https://florian-berger.info/geoip/api.php?ip=" . $ip;
 	$json = file_get_contents($file);
 	
 	$geo_data = json_decode($json, true);

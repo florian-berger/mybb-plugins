@@ -1,6 +1,6 @@
 <?php
 // Main Plugin file for the plugin Firework
-// © 2013 Flobo x3
+// © 2013-2017 Flobo x3
 // ----------------------------------------
 // Last Update: 2017-04-13
 

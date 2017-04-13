@@ -2,7 +2,7 @@
 // Main Plugin file for the plugin Firework
 // © 2013 Flobo x3
 // ----------------------------------------
-// Last Update: 2014-12-02
+// Last Update: 2017-04-13
 
 if(!defined('IN_MYBB')) {
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");

@@ -25,7 +25,7 @@ function firework_info()
 		'website'		=> 'http://community.mybb.com/user-75209.html',
 		'author'		=> 'Flobo x3',
 		'authorsite'	=> 'http://forum.mybboard.de/user-9022.html',
-		'version'		=> '1.2.1',
+		'version'		=> '1.3.0',
 		'compatibility' => '14*,16*,18*',
 		'guid'			=> '123fab94fb6b3d7a6ebaf589f1c8291f',
 		'codename' 		=> 'berger_florian_firework'

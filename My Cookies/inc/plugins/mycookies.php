@@ -66,6 +66,11 @@ function mycookies_deactivate() {
 function ShowCookies() {
     global $mybb,$db,$theme,$headerinclude,$header,$footer,$lang;
 
+    if(!isset($mybb->input['action']) || $mybb->input['action'] != "cookies") {
+        // Not relevant for us - return and do nothing
+        return;
+    }
+
     $lang->load("mycookies");
 
     $pageTemplate = "<html><head><title>{\$lang->mycookies_page_header} - {\$mybb->settings['bbname']}</title>{\$headerinclude}</head><body>{\$header}<table border=\\\"0\\\" cellspacing=\\\"{\$theme['borderwidth']}\\\" cellpadding=\\\"{\$theme['tablespace']}\\\" class=\\\"tborder\\\"><tr><td class=\\\"thead\\\"><strong>{\$lang->mycookies_page_header}</strong></td></tr><tr><td class=\\\"trow1\\\">{\$lang->mycookies_page_desc}<br /><br />

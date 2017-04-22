@@ -21,7 +21,7 @@ function mycookies_info() {
         'website'		=> 'http://community.mybb.com/user-75209.html',
         'author'		=> 'Florian Berger',
         "authorsite"	=> 'https://florian-berger.info',
-        'version'		=> '1.0.0',
+        'version'		=> '1.1.0',
         'compatibility' => '18*',
         'guid'			=> 'e39882b1e67e4ab18cbdfb4c581822e3',
         'codename' 		=> 'berger_florian_cookies'

@@ -2,7 +2,7 @@
 // Main Plugin file for the plugin My Cookies
 // © 2017 Florian Berger
 // ----------------------------------------
-// Last Update: 2017-04-13
+// Last Update: 2017-04-22
 
 if(!defined('IN_MYBB')) {
     die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");

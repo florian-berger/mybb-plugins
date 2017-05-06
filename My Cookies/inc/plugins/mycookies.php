@@ -2,7 +2,7 @@
 // Main Plugin file for the plugin My Cookies
 // © 2017 Florian Berger
 // ----------------------------------------
-// Last Update: 2017-04-22
+// Last Update: 2017-05-06
 
 if(!defined('IN_MYBB')) {
     die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
@@ -21,7 +21,7 @@ function mycookies_info() {
         'website'		=> 'http://community.mybb.com/user-75209.html',
         'author'		=> 'Florian Berger',
         "authorsite"	=> 'https://florian-berger.info',
-        'version'		=> '1.1.0',
+        'version'		=> '1.1.1',
         'compatibility' => '18*',
         'guid'			=> 'e39882b1e67e4ab18cbdfb4c581822e3',
         'codename' 		=> 'berger_florian_cookies'
@@ -80,13 +80,29 @@ function ShowCookies() {
     $cookiesTable = '';
     if (($mybb->settings['showcookies'] == 1) || ($mybb->settings['showcookies'] == 'yes')) {
         $i = 0;
-        foreach ($_COOKIE as $cName=>$cValue)
+        foreach ($mybb->cookies as $cName=>$cValue)
         {
-            $i++;
-            $trow = $i % 2 == 0 ? "trow2" : "trow1";
+            $cName = htmlspecialchars($cName, ENT_QUOTES);
 
-            $cookiesTable .= '<tr><td class="'.$trow.'" valign="top">'.$cName.'</td><td class="'.$trow.'" valign="top">'.$cValue.'</td></tr>';
-            //echo $cName.' is '.$cValue."<br>\n";
+            if (is_array($cValue)) {
+                foreach($cValue as $subName=>$subValue) {
+                    $subName = htmlspecialchars($subName, ENT_QUOTES);
+                    $subValue = htmlspecialchars($subValue, ENT_QUOTES);
+
+                    $trow = $i % 2 == 0 ? "trow2" : "trow1";
+                    $cookiesTable .= '<tr><td class="'.$trow.'" valign="top">'.$cName.'['.$subName.']</td><td class="'.$trow.'" valign="top">'.$subValue.'</td></tr>';
+
+                    $i++;
+                }
+            } else {
+                $cValue = htmlspecialchars($cValue, ENT_QUOTES);
+
+                $trow = $i % 2 == 0 ? "trow2" : "trow1";
+                $cookiesTable .= '<tr><td class="'.$trow.'" valign="top">'.$cName.'</td><td class="'.$trow.'" valign="top">'.$cValue.'</td></tr>';
+
+                $i++;
+            }
+
         }
     } else {
         $cookiesTable .= '<tr><td class="trow1" valign="top" colspan="2">'.$lang->table_cookies_disabled.'</td></tr>';

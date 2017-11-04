@@ -1,5 +1,5 @@
 <?php
-	$l['extendeduseradmininfo_tableheader'] = 'Erweiterte Userstatistik';
+	$l['extendeduseradmininfo_tableheader'] = 'Erweiterte Benutzerinformationen';
 	$l['extendeduseradmininfo_ip'] = 'IP-Adresse:';
 	$l['extendeduseradmininfo_browser'] = 'Browser:';
 	$l['extendeduseradmininfo_operatingsystem'] = 'Betriebssystem:';

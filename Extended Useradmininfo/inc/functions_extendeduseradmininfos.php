@@ -107,14 +107,39 @@ function getBrowser($u_agent)
     );
 } 
 
-function getGeoInformations($ip)
+function getGeoInformation($ip)
 {
-    // Read data from API
-	$file="https://florian-berger.info/geoip/api.php?ip=" . $ip;
-	$json = file_get_contents($file);
-	
-	$geo_data = json_decode($json, true);
-	return $geo_data;
+    if (!file_exists('inc/geoip/GeoLiteCity.dat')) {
+        throw new Exception('GeoLiteCity.dat file was not found!');
+    }
+
+    // Include Geo-API
+    include("geoip/geoipcity.inc");
+    include("geoip/geoipregionvars.php");
+
+    global $GEOIP_REGION_NAME;
+
+    $gi = geoip_open("inc/geoip/GeoLiteCity.dat", GEOIP_STANDARD);
+    $record = geoip_record_by_addr($gi, $ip);
+
+    $geo = array(
+        "CountryCode" => $record->country_code,
+        "CountryCode3" => $record->country_code3,
+        "Country" => $record->country_name,
+        "Region" => $GEOIP_REGION_NAME[$record->country_code][$record->region],
+        "City" => $record->city,
+        "PostalCode" => $record->postal_code,
+        "Latitude" => $record->latitude,
+        "Longitude" => $record->longitude,
+        "MetroCode" => $record->metro_code,
+        "AreaCode" => $record->area_code,
+        "ContinentCode" => $record->continent_code,
+        "IP" => $ip
+    );
+
+    geoip_close($gi);
+
+    return $geo;
 }
 
 ?>

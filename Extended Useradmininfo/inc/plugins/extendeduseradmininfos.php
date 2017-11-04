@@ -16,11 +16,11 @@ function extendeduseradmininfos_info() {
 	
 	$info = array(
 		"name" 			=> $lang->extendeduseradmininfo_name,
-		"description"	=> $lang->extendeduseradmininfo_desc,
+		"description"	=> $lang->extendeduseradmininfo_desc . '<br /><br />' . $lang->updatedatahint,
 		'website'		=> 'http://community.mybb.com/user-75209.html',
 		'author'		=> 'Florian Berger',
 		"authorsite"	=> 'https://florian-berger.info',
-		"version"		=> '2.1.0',
+		"version"		=> '2.2.0',
 		"compatibility" => '16*,18*',
 		"guid" 			=> '138867d0b45740bce59f3e48dc72c893',
 		"codename"		=> 'berger_florian_useradmininfo'
@@ -270,42 +270,61 @@ function extendeduseradmininfos_get_info() {
 	
 	$geoTemp = "";
 	if (filter_var($lastip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-		// Wenn IPv4, dann Standort bestimmen
+		// When IPv4, detect place
 		require_once("inc/functions_extendeduseradmininfos.php");
-		$geo = getGeoInformations($lastip);
-		
-		if ($geoTable == '') {
-			eval("\$geoTable = \"".$templates->get("extendeduseradmininfo_geo_info")."\";");
-		}
-		
-		if ($geo['Country'] == "")
-            $geo['Country'] = $lang->extendeduseradmininfo_unknown;
-		
-		if ($geo['CountryCode'] != "")
-            $geo['CountryCode'] = " (" . $geo['CountryCode'] . ")";
-		
-		if ($geo['City'] == "")
-            $geo['City'] = $lang->extendeduseradmininfo_unknown;
-		
-		if ($geo['Latitude'] == "")
-            $geo['Latitude'] = $lang->extendeduseradmininfo_unknown;
-		
-		if ($geo['Longitude'] == "")
-            $geo['Longitude'] = $lang->extendeduseradmininfo_unknown;
-		
-		if ($geo['Region'] == "")
-            $geo['Region'] = $lang->extendeduseradmininfo_unknown;
-		
-		if ($geo['ContinentCode'] == "")
-            $geo['ContinentCode'] = $lang->extendeduseradmininfo_unknown;
-		
-		if ($geo['PostalCode'] != "")
-			$geo['PostalCode'] .= " ";
-		
-		$geoTemp = str_replace(
-								array('___COUNTRY___', '___COUNTRYCODE___', '___CITY___', '___LATITUDE___', '___LONGITUDE___', '___POSTALCODE___', '___REGION___', '___CONTINENTCODE___'), 
-								array($geo['Country'], $geo['CountryCode'], $geo['City'], $geo['Latitude'], $geo['Longitude'], $geo['PostalCode'], $geo['Region'], $geo['ContinentCode']),
-				   $geoTable);
+
+		$error = false;
+		try {
+            $geo = getGeoInformation($lastip);
+        } catch (Exception $ex) {
+		    $geoTemp = '<br />
+                        <table border="0" cellspacing="' . $theme['borderwidth'] . '" cellpadding="' . $theme['tablespace'] . '" class="tborder">
+                        <tr>
+                        <td colspan="2" class="thead"><strong>' . $lang->extendeduseradmininfo_geo_header . '</strong></td>
+                        </tr>
+                        <tr>
+                        <td class="trow1" >' . $ex->getMessage() . '</td>
+                        </tr>
+                        </table>';
+            //$geoTemp = $ex->getMessage();
+
+            $error = true;
+        }
+
+		if (!$error) {
+            if ($geoTable == '') {
+                eval("\$geoTable = \"".$templates->get("extendeduseradmininfo_geo_info")."\";");
+            }
+
+            if ($geo['Country'] == "")
+                $geo['Country'] = $lang->extendeduseradmininfo_unknown;
+
+            if ($geo['CountryCode'] != "")
+                $geo['CountryCode'] = " (" . $geo['CountryCode'] . ")";
+
+            if ($geo['City'] == "")
+                $geo['City'] = $lang->extendeduseradmininfo_unknown;
+
+            if ($geo['Latitude'] == "")
+                $geo['Latitude'] = $lang->extendeduseradmininfo_unknown;
+
+            if ($geo['Longitude'] == "")
+                $geo['Longitude'] = $lang->extendeduseradmininfo_unknown;
+
+            if ($geo['Region'] == "")
+                $geo['Region'] = $lang->extendeduseradmininfo_unknown;
+
+            if ($geo['ContinentCode'] == "")
+                $geo['ContinentCode'] = $lang->extendeduseradmininfo_unknown;
+
+            if ($geo['PostalCode'] != "")
+                $geo['PostalCode'] .= " ";
+
+            $geoTemp = str_replace(
+                array('___COUNTRY___', '___COUNTRYCODE___', '___CITY___', '___LATITUDE___', '___LONGITUDE___', '___POSTALCODE___', '___REGION___', '___CONTINENTCODE___'),
+                array($geo['Country'], $geo['CountryCode'], $geo['City'], $geo['Latitude'], $geo['Longitude'], $geo['PostalCode'], $geo['Region'], $geo['ContinentCode']),
+                $geoTable);
+        }
 	} else {
 		if ($geoTable == '') {
 			eval("\$geoTable = \"".$templates->get("extendeduseradmininfo_view_nogeoinfos")."\";");

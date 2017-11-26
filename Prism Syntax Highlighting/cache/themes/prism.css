@@ -1,4 +1,4 @@
-/* http://prismjs.com/download.html?themes=prism&languages=markup+css+clike+javascript+applescript+aspnet+autoit+c+csharp+cpp+git+ini+java+json+lua+objectivec+pascal+perl+php+powershell+python+sql+typescript&plugins=line-highlight+line-numbers+autolinker+toolbar+show-language+copy-to-clipboard */
+/* http://prismjs.com/download.html?themes=prism&languages=markup+css+clike+javascript+applescript+c+aspnet+autoit+basic+cpp+csharp+git+ini+java+json+lua+objectivec+pascal+perl+php+powershell+python+sql+typescript+vbnet&plugins=line-highlight+line-numbers+autolinker+toolbar+show-language+copy-to-clipboard */
 /**
  * prism.js default theme for JavaScript, CSS and HTML
  * Based on dabblet (http://dabblet.com)
@@ -190,6 +190,7 @@ pre.line-numbers {
 
 pre.line-numbers > code {
     position: relative;
+    white-space: inherit;
 }
 
 .line-numbers .line-numbers-rows {

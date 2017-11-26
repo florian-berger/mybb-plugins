@@ -24,7 +24,7 @@ function syntaxhighlighting_info()
         'website'		=> 'http://community.mybb.com/user-75209.html',
         'author'		=> 'Florian Berger',
         "authorsite"	=> 'https://florian-berger.info',
-        'version'		=> '1.0.0',
+        'version'		=> '1.1.0',
         'compatibility' => '18*',
         'guid'			=> '707b121d48b949d99aa20714eb41c713',
         'codename' 		=> 'berger_florian_prism_sh'

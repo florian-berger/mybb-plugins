@@ -11,6 +11,7 @@ The repository contains the following plugins:
 > * [HTTP-Referers](https://bitbucket.org/Florian_Berger/mybb-plugins/src/master/HTTP%20Referers/)
 > * [My Cookies](https://bitbucket.org/Florian_Berger/mybb-plugins/src/master/My%20Cookies/)
 > * [Prism Syntax Highlighting](https://bitbucket.org/Florian_Berger/mybb-plugins/src/master/Prism%20Syntax%20Highlighting/)
+> * [Steam Game Widget](https://bitbucket.org/Florian_Berger/mybb-plugins/src/master/SteamGameWidget/)
 > * [Top Reputations](https://bitbucket.org/Florian_Berger/mybb-plugins/src/master/Top%20Reputations/)
 
 Click on any plugin to see further information.

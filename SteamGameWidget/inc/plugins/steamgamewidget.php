@@ -27,8 +27,8 @@ function steamgamewidget_info() {
         "description"	=> $desc,
         'website'		=> 'http://community.mybb.com/user-75209.html',
         'author'		=> 'Florian Berger',
-        "authorsite"	=> 'https://florian-berger.info',
-        "version"		=> '1.0.0',
+        "authorsite"	=> 'https://berger-media.biz',
+        "version"		=> '1.1.0',
         "compatibility" => '18*',
         'guid'			=> 'f881f071e6ed47feaa5cfeb9ce4e1ba2',
         "codename"		=> 'berger_florian_steamgamewidget'
@@ -84,7 +84,9 @@ function steamgamewidget_is_installed()
 }
 
 function steam_game($message) {
-    return preg_replace("#\[steamgame](.*?)\[/steamgame\]#ei", "steamgame_parse('$1')", $message);
+    return preg_replace_callback("#\[steamgame](.*?)\[/steamgame\]#i", function($matches) {
+        return steamgame_parse($matches[1]);
+    }, $message);
 }
 
 function steamgame_parse($gameId) {
@@ -94,10 +96,10 @@ function steamgame_parse($gameId) {
 
     $widthSettingsValue = $mybb->settings['steamgame_widget_max_width'];
     if ($widthSettingsValue == 0) {
-        return '<iframe src="http://store.steampowered.com/widget/' . $gameId . '" frameborder="0" style="width: 100%; height: 190px;"></iframe>';
+        return '<iframe src="https://store.steampowered.com/widget/' . $gameId . '" frameborder="0" style="width: 100%; height: 190px;"></iframe>';
     }
 
-    return '<iframe src="http://store.steampowered.com/widget/' . $gameId . '" frameborder="0" style="width: ' . $widthSettingsValue . 'px; height: 190px;"></iframe>';
+    return '<iframe src="https://store.steampowered.com/widget/' . $gameId . '" frameborder="0" style="width: ' . $widthSettingsValue . 'px; height: 190px;"></iframe>';
 }
 
 ?>

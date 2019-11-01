@@ -1,7 +1,7 @@
 <?php
 	// Functions file for the plugin Extended Useradmininfos
-	// © 2013-2016 Florian Berger
-	// Last change: 2016-11-14
+	// © 2013-2019 Florian Berger
+	// Last change: 2019-11-01
 
 function getBrowser($u_agent)
 {
@@ -36,36 +36,40 @@ function getBrowser($u_agent)
     }
    
     // Next get the name of the useragent yes seperately and for good reason
-    if(preg_match('/Edge/i', $u_agent)) {
+    if (preg_match('/Edg/i', $u_agent)) {
+        $bname = 'Microsoft Edge (Chromium)';
+        $ub = "Edg";
+    }
+    elseif (preg_match('/Edge/i', $u_agent)) {
         $bname = 'Microsoft Edge';
         $ub = "Edge";
     }
-    elseif(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent))
+    elseif (preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent))
     {
         $bname = 'Internet Explorer';
         $ub = "MSIE";
     }
-    elseif(preg_match('/Firefox/i',$u_agent))
+    elseif (preg_match('/Firefox/i',$u_agent))
     {
         $bname = 'Mozilla Firefox';
         $ub = "Firefox";
     }
-    elseif(preg_match('/Chrome/i',$u_agent))
+    elseif (preg_match('/Chrome/i',$u_agent))
     {
         $bname = 'Google Chrome';
         $ub = "Chrome";
     }
-    elseif(preg_match('/Safari/i',$u_agent))
+    elseif (preg_match('/Safari/i',$u_agent))
     {
         $bname = 'Apple Safari';
         $ub = "Safari";
     }
-    elseif(preg_match('/Opera/i',$u_agent))
+    elseif (preg_match('/Opera/i',$u_agent))
     {
         $bname = 'Opera';
         $ub = "Opera";
     }
-    elseif(preg_match('/Netscape/i',$u_agent))
+    elseif (preg_match('/Netscape/i',$u_agent))
     {
         $bname = 'Netscape';
         $ub = "Netscape";

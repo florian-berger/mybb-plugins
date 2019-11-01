@@ -1,7 +1,7 @@
 <?php
 	// Main Plugin file for the plugin Extended Useradmininfos
-	// © 2013-2016 Florian Berger
-	// Last change: 2016-11-14
+	// © 2013-2019 Florian Berger
+	// Last change: 2019-11-01
 	
 if(!defined('IN_MYBB')) {
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
@@ -20,7 +20,7 @@ function extendeduseradmininfos_info() {
 		'website'		=> 'http://community.mybb.com/user-75209.html',
 		'author'		=> 'Florian Berger',
 		"authorsite"	=> 'https://florian-berger.info',
-		"version"		=> '2.2.0',
+		"version"		=> '2.3.0',
 		"compatibility" => '16*,18*',
 		"guid" 			=> '138867d0b45740bce59f3e48dc72c893',
 		"codename"		=> 'berger_florian_useradmininfo'

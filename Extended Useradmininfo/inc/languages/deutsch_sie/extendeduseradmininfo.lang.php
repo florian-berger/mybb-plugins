@@ -14,6 +14,7 @@
 	$l['extendeduseradmininfo_geo_region'] = 'Region';
 	$l['extendeduseradmininfo_geo_latitude'] = 'Latitude';
 	$l['extendeduseradmininfo_geo_longitude'] = 'Longitude';
-	$l['extendeduseradmininfo_geo_continentcode'] = 'Kontinent (Code)';
-	$l['extendeduseradmininfo_no_geo_ipv6'] = '&Uuml;ber IPv6-Adressen k&ouml;nnen aktuell keine Geo-Informationen abgerufen werden.';
+
+    $l['extendeduseradmininfo_geo_loading'] = 'Lade Informationen...';
+    $l['extendeduseradmininfo_geo_error_loading'] = 'Beim Laden der Geo-Informationen ist ein Fehler aufgetreten.';
 ?>

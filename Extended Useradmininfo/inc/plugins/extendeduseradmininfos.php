@@ -1,26 +1,34 @@
 <?php
 	// Main Plugin file for the plugin Extended Useradmininfos
 	// © 2013-2019 Florian Berger
-	// Last change: 2019-11-01
+	// Last change: 2019-11-02
 	
 if(!defined('IN_MYBB')) {
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
+$plugins->add_hook('pre_output_page', 'add_script_to_head');
 $plugins->add_hook('global_end', 'extendeduseradmininfos_set_info');
 $plugins->add_hook('member_profile_start', 'extendeduseradmininfos_get_info');
 
 function extendeduseradmininfos_info() {
 	global $lang, $db;
 	$lang->load('extendeduseradmininfo');
+
+    $desc = $lang->extendeduseradmininfo_desc . '<br /><br /><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="X9ULXRYHP84ZY">
+<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+</form>';
 	
 	$info = array(
 		"name" 			=> $lang->extendeduseradmininfo_name,
-		"description"	=> $lang->extendeduseradmininfo_desc . '<br /><br />' . $lang->updatedatahint,
+		"description"	=> $desc,
 		'website'		=> 'http://community.mybb.com/user-75209.html',
 		'author'		=> 'Florian Berger',
-		"authorsite"	=> 'https://florian-berger.info',
-		"version"		=> '2.3.0',
+		"authorsite"	=> 'https://berger-media.biz',
+		"version"		=> '3.0.0',
 		"compatibility" => '16*,18*',
 		"guid" 			=> '138867d0b45740bce59f3e48dc72c893',
 		"codename"		=> 'berger_florian_useradmininfo'
@@ -78,36 +86,63 @@ function extendeduseradmininfos_activate() {
 	$templatearray = array(
         "title" => "extendeduseradmininfo_geo_info",
         "template" => "
-		<br />
-        <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
-        <tr>
-        <td colspan=\"2\" class=\"thead\"><strong>{\$lang->extendeduseradmininfo_geo_header}</strong></td>
-        </tr>
-        <tr>
-        <td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_country}</strong></td>
-        <td class=\"trow1\">___COUNTRY______COUNTRYCODE___</td>
-        </tr>
-        <tr>
-        <td class=\"trow2\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_city}</strong></td>
-        <td class=\"trow2\">___POSTALCODE______CITY___</td>
-        </tr>
-        <tr>
-        <td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_region}</strong></td>
-        <td class=\"trow1\">___REGION___</td>
-        </tr>
-        <tr>
-        <td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_continentcode}</strong></td>
-        <td class=\"trow1\">___CONTINENTCODE___</td>
-        </tr>
-        <tr>
-        <td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_latitude}</strong></td>
-        <td class=\"trow1\">___LATITUDE___</td>
-        </tr>
-        <tr>
-        <td class=\"trow2\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_longitude}</strong></td>
-        <td class=\"trow2\">___LONGITUDE___</td>
-        </tr>
-        </table>
+<br />
+<div id=\"geo_info_loading\">
+	<table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
+		<tr>
+			<td colspan=\"2\" class=\"thead\"><strong>{\$lang->extendeduseradmininfo_geo_header}</strong></td>
+		</tr>
+		<tr>
+			<td colspan=\"2\">
+				{\$lang->extendeduseradmininfo_geo_loading}
+				<div id=\"last_user_ip_address\" class=\"hidden\">{\$lastip}</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id=\"geo_info_data\" class=\"hidden\">
+	<table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
+		<tr>
+			<td colspan=\"2\" class=\"thead\"><strong>{\$lang->extendeduseradmininfo_geo_header}</strong></td>
+		</tr>
+		<tr>
+			<td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_country}</strong></td>
+			<td class=\"trow1\" id=\"geo_country\"></td>
+		</tr>
+		<tr>
+			<td class=\"trow2\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_city}</strong></td>
+			<td class=\"trow2\" id=\"geo_city\"></td>
+		</tr>
+		<tr>
+			<td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_region}</strong></td>
+			<td class=\"trow1\" id=\"geo_region\"></td>
+		</tr>
+		<tr>
+			<td class=\"trow1\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_latitude}</strong></td>
+			<td class=\"trow1\" id=\"geo_lat\"></td>
+		</tr>
+		<tr>
+			<td class=\"trow2\" width=\"40%\"><strong>{\$lang->extendeduseradmininfo_geo_longitude}</strong></td>
+			<td class=\"trow2\" id=\"geo_long\"></td>
+		</tr>
+	</table>
+</div>
+
+<div id=\"geo_info_error\" class=\"hidden\">
+	<table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
+		<tr>
+			<td colspan=\"2\" class=\"thead\"><strong>{\$lang->extendeduseradmininfo_geo_header}</strong></td>
+		</tr>
+		<tr>
+			<td colspan=\"2\">{\$lang->extendeduseradmininfo_geo_error_loading}</td>
+		</tr>
+	</table>
+</div>
+
+<script type=\"text/javascript\">
+	loadGeoInformation();
+</script>
 		",
 		"sid" => -2
 	);
@@ -129,24 +164,6 @@ function extendeduseradmininfos_activate() {
 		"sid" => -2
 	);
 	$db->insert_query("templates",$templatearray);
-	
-	$templatearray = array(
-		"title" => 'extendeduseradmininfo_view_nogeoinfos',
-		"template" => "
-		<br />
-        <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
-        <tr>
-        <td colspan=\"2\" class=\"thead\"><strong>{\$lang->extendeduseradmininfo_geo_header}</strong></td>
-        </tr>
-        <tr>
-        <td class=\"trow1\" >{\$lang->extendeduseradmininfo_no_geo_ipv6}</td>
-        </tr>
-        </table>
-		",
-		"sid" => -2
-	);
-	$db->insert_query("templates",$templatearray);
-	
 	
 	// Edit AdministratorOptions Template
 	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
@@ -197,8 +214,7 @@ function extendeduseradmininfos_is_installed() {
 function extendeduseradmininfos_uninstall() {
 	global $db;
 	
-	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users`
-			 DROP COLUMN last_useragent";
+	$sQry = "ALTER TABLE `" . TABLE_PREFIX . "users` DROP COLUMN last_useragent";
 	$db->write_query($sQry);
 }
 
@@ -216,7 +232,7 @@ function extendeduseradmininfos_set_info() {
 }
 
 function extendeduseradmininfos_get_info() {
-    global $lang, $db, $mybb, $templates, $theme, $infoTable, $advInfo, $geoTable, $geoInfo;
+    global $lang, $db, $mybb, $templates, $theme, $infoTable, $advInfo, $geoInfo;
     $lang->load('extendeduseradmininfo');
 	
 	$userid = intval($mybb->input['uid']);
@@ -267,72 +283,16 @@ function extendeduseradmininfos_get_info() {
 		$temp = $infoTable;
 	}
     $advInfo = $temp;
-	
-	$geoTemp = "";
-	if (filter_var($lastip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-		// When IPv4, detect place
-		require_once("inc/functions_extendeduseradmininfos.php");
 
-		$error = false;
-		try {
-            $geo = getGeoInformation($lastip);
-        } catch (Exception $ex) {
-		    $geoTemp = '<br />
-                        <table border="0" cellspacing="' . $theme['borderwidth'] . '" cellpadding="' . $theme['tablespace'] . '" class="tborder">
-                        <tr>
-                        <td colspan="2" class="thead"><strong>' . $lang->extendeduseradmininfo_geo_header . '</strong></td>
-                        </tr>
-                        <tr>
-                        <td class="trow1" >' . $ex->getMessage() . '</td>
-                        </tr>
-                        </table>';
-            //$geoTemp = $ex->getMessage();
+    eval("\$geoInfo = \"".$templates->get("extendeduseradmininfo_geo_info")."\";");
+}
 
-            $error = true;
-        }
+function add_script_to_head($site) {
+    global $mybb;
 
-		if (!$error) {
-            if ($geoTable == '') {
-                eval("\$geoTable = \"".$templates->get("extendeduseradmininfo_geo_info")."\";");
-            }
+    $site = str_replace('</head>','<script type="text/javascript" src="'.$mybb->settings['bburl'].'/jscripts/extendeduseradmininfo.js"></script></head>',$site);
 
-            if ($geo['Country'] == "")
-                $geo['Country'] = $lang->extendeduseradmininfo_unknown;
-
-            if ($geo['CountryCode'] != "")
-                $geo['CountryCode'] = " (" . $geo['CountryCode'] . ")";
-
-            if ($geo['City'] == "")
-                $geo['City'] = $lang->extendeduseradmininfo_unknown;
-
-            if ($geo['Latitude'] == "")
-                $geo['Latitude'] = $lang->extendeduseradmininfo_unknown;
-
-            if ($geo['Longitude'] == "")
-                $geo['Longitude'] = $lang->extendeduseradmininfo_unknown;
-
-            if ($geo['Region'] == "")
-                $geo['Region'] = $lang->extendeduseradmininfo_unknown;
-
-            if ($geo['ContinentCode'] == "")
-                $geo['ContinentCode'] = $lang->extendeduseradmininfo_unknown;
-
-            if ($geo['PostalCode'] != "")
-                $geo['PostalCode'] .= " ";
-
-            $geoTemp = str_replace(
-                array('___COUNTRY___', '___COUNTRYCODE___', '___CITY___', '___LATITUDE___', '___LONGITUDE___', '___POSTALCODE___', '___REGION___', '___CONTINENTCODE___'),
-                array($geo['Country'], $geo['CountryCode'], $geo['City'], $geo['Latitude'], $geo['Longitude'], $geo['PostalCode'], $geo['Region'], $geo['ContinentCode']),
-                $geoTable);
-        }
-	} else {
-		if ($geoTable == '') {
-			eval("\$geoTable = \"".$templates->get("extendeduseradmininfo_view_nogeoinfos")."\";");
-		}
-		
-		$geoTemp = $geoTable;
-	}
-	$geoInfo = $geoTemp;
+    return $site;
 }
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 	// Functions file for the plugin Extended Useradmininfos
 	// © 2013-2019 Florian Berger
-	// Last change: 2019-11-01
+	// Last change: 2019-11-02
 
 function getBrowser($u_agent)
 {
@@ -109,41 +109,6 @@ function getBrowser($u_agent)
         'platform'  => $platform,
         'pattern'    => $pattern
     );
-} 
-
-function getGeoInformation($ip)
-{
-    if (!file_exists('inc/geoip/GeoLiteCity.dat')) {
-        throw new Exception('GeoLiteCity.dat file was not found!');
-    }
-
-    // Include Geo-API
-    include("geoip/geoipcity.inc");
-    include("geoip/geoipregionvars.php");
-
-    global $GEOIP_REGION_NAME;
-
-    $gi = geoip_open("inc/geoip/GeoLiteCity.dat", GEOIP_STANDARD);
-    $record = geoip_record_by_addr($gi, $ip);
-
-    $geo = array(
-        "CountryCode" => $record->country_code,
-        "CountryCode3" => $record->country_code3,
-        "Country" => $record->country_name,
-        "Region" => $GEOIP_REGION_NAME[$record->country_code][$record->region],
-        "City" => $record->city,
-        "PostalCode" => $record->postal_code,
-        "Latitude" => $record->latitude,
-        "Longitude" => $record->longitude,
-        "MetroCode" => $record->metro_code,
-        "AreaCode" => $record->area_code,
-        "ContinentCode" => $record->continent_code,
-        "IP" => $ip
-    );
-
-    geoip_close($gi);
-
-    return $geo;
 }
 
 ?>

@@ -1,9 +1,10 @@
-name: Bug Report
-description: File a bug report
+name: "Bug Report"
+description: "File a bug report"
 title: "[Bug]: "
 labels: ["bug"]
 assignees:
   - florian-berger
+
 body:
 - type: markdown
   attributes:
@@ -25,13 +26,13 @@ body:
     label: Plugin
     description: What plugin has the issue?
     options:
-      - Extended Useradmininfo
-      - Firework
-      - HTTP Referers
-      - My Cookies
-      - Prism Syntax Highlighting
-      - SteamGameWidget
-      - Top Reputations
+      - "Extended Useradmininfo"
+      - "Firework"
+      - "HTTP Referers"
+      - "My Cookies"
+      - "Prism Syntax Highlighting"
+      - "SteamGameWidget"
+      - "Top Reputations"
     validations:
       required: true
 
@@ -79,6 +80,7 @@ body:
     description: Please copy and paste any relevant log or error outputs.
 
 - type: textarea
+  id: further-data
   attributes:
     label: Further information / Screenshots
     description: |

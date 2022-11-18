@@ -1,7 +1,7 @@
 /*
 Last change: 2019-11-02
 © 2019 Florian Berger
-License: https://bitbucket.org/Florian_Berger/mybb-plugins/src/master/Extended%20Useradmininfo/LICENSE
+License: https://github.com/florian-berger/mybb-plugins/blob/master/Extended%20Useradmininfo/LICENSE
  */
 
 function loadGeoInformation() {

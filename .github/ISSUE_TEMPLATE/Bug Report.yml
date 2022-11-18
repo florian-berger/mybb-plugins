@@ -5,84 +5,84 @@ labels: ["bug"]
 assignees:
   - florian-berger
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report! It is helpfull to fill all of the fields below.
+- type: markdown
+  attributes:
+    value: |
+      Thanks for taking the time to fill out this bug report! It is helpfull to fill all of the fields below.
 
-  - type: input
-    id: contact
-    attributes:
-      label: Contact Details
-      description: How can I get in touch with you if I need more info?
-      placeholder: ex. email@example.com
-    validations:
-      required: false
+- type: input
+  id: contact
+  attributes:
+    label: Contact Details
+    description: How can I get in touch with you if I need more info?
+    placeholder: ex. email@example.com
+  validations:
+    required: false
 
-  - type: dropdown
-    id: plugin
-    attributes:
-      label: Plugin
-      description: What plugin has the issue?
-      options:
-        - Extended Useradmininfo
-        - Firework
-        - HTTP Referers
-        - My Cookies
-        - Prism Syntax Highlighting
-        - SteamGameWidget
-        - Top Reputations
-      validations:
-        required: true
-
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What happened?
-      description: Please describe the issue as detailled as you can remember.
-      placeholder: Tell me what happened!
+- type: dropdown
+  id: plugin
+  attributes:
+    label: Plugin
+    description: What plugin has the issue?
+    options:
+      - Extended Useradmininfo
+      - Firework
+      - HTTP Referers
+      - My Cookies
+      - Prism Syntax Highlighting
+      - SteamGameWidget
+      - Top Reputations
     validations:
       required: true
 
-  - type: textarea
-    id: reproduction
-    attributes:
-      label: Reproduction steps
-      description: Please describe the steps that are required to reproduce the issue
-      placeholder: Tell me how to reproduce!
-    validations:
-      required: true
+- type: textarea
+  id: what-happened
+  attributes:
+    label: What happened?
+    description: Please describe the issue as detailled as you can remember.
+    placeholder: Tell me what happened!
+  validations:
+    required: true
 
-  - type: input
-    id: version
-    attributes:
-      label: Version
-      description: What version of the software are you using?
-    validations:
-      required: true
+- type: textarea
+  id: reproduction
+  attributes:
+    label: Reproduction steps
+    description: Please describe the steps that are required to reproduce the issue
+    placeholder: Tell me how to reproduce!
+  validations:
+    required: true
 
-  - type: dropdown
-    id: browsers
-    attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+- type: input
+  id: version
+  attributes:
+    label: Version
+    description: What version of the software are you using?
+  validations:
+    required: true
 
-  - type: textarea
-    id: logs
-    attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log or error outputs.
+- type: dropdown
+  id: browsers
+  attributes:
+    label: What browsers are you seeing the problem on?
+    multiple: true
+    options:
+      - Firefox
+      - Chrome
+      - Safari
+      - Microsoft Edge
 
-  - type: textarea
-    attributes:
-      label: Further information / Screenshots
-      description: |
-        If you have any further information or screenshots, you can enter them here. 
-        To attach images, click this area to highlight it and then drag your files into it.
-    validations:
-      required: false
+- type: textarea
+  id: logs
+  attributes:
+    label: Relevant log output
+    description: Please copy and paste any relevant log or error outputs.
+
+- type: textarea
+  attributes:
+    label: Further information / Screenshots
+    description: |
+      If you have any further information or screenshots, you can enter them here. 
+      To attach images, click this area to highlight it and then drag your files into it.
+  validations:
+    required: false
